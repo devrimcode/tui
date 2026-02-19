@@ -17,6 +17,7 @@ rustdoc-args = ["--cfg", "docsrs"]
 
 [features]
 default = []
+
 full = [
   "himalaya",
   "imap",
@@ -37,50 +38,142 @@ full = [
   "tracing",
   "wizard",
   "build-envs",
-  "rustls",
+  "native-tls",
 ]
 
 # Pimalaya projects
-#
-himalaya = ["dep:async-trait", "dep:comfy-table", "dep:email-lib", "dep:mml-lib", "dep:petgraph", "dep:process-lib", "dep:serde", "email-lib?/derive", "email-lib?/thread", "config"]
+himalaya = [
+  "dep:async-trait",
+  "dep:comfy-table",
+  "dep:email-lib",
+  "dep:mml-lib",
+  "dep:petgraph",
+  "dep:process-lib",
+  "dep:serde",
+  "email-lib?/derive",
+  "email-lib?/thread",
+  "config"
+]
 
 # Email backends
-#
-imap = ["dep:email-lib", "dep:secret-lib", "dep:once_cell", "email", "email-lib?/autoconfig", "email-lib?/imap"]
-maildir = ["dep:email-lib", "dep:dirs", "email-lib?/maildir", "path"]
-notmuch = ["dep:email-lib", "email-lib?/notmuch", "path"]
-smtp = ["dep:email-lib", "dep:secret-lib", "dep:once_cell", "email", "email-lib?/autoconfig", "email-lib?/smtp"]
-sendmail = ["dep:email-lib", "email-lib?/sendmail"]
+imap = [
+  "dep:email-lib",
+  "dep:secret-lib",
+  "dep:once_cell",
+  "email",
+  "email-lib?/autoconfig",
+  "email-lib?/imap"
+]
+
+maildir = [
+  "dep:email-lib",
+  "dep:dirs",
+  "email-lib?/maildir",
+  "path"
+]
+
+notmuch = [
+  "dep:email-lib",
+  "email-lib?/notmuch",
+  "path"
+]
+
+smtp = [
+  "dep:email-lib",
+  "dep:secret-lib",
+  "dep:once_cell",
+  "email",
+  "email-lib?/autoconfig",
+  "email-lib?/smtp"
+]
+
+sendmail = [
+  "dep:email-lib",
+  "email-lib?/sendmail"
+]
 
 # PGP backends
-#
 pgp = []
-pgp-commands = ["email-lib?/pgp-commands", "mml-lib?/pgp-commands", "pgp"]
-pgp-gpg = ["email-lib?/pgp-gpg", "mml-lib?/pgp-gpg", "pgp"]
-pgp-native = ["email-lib?/pgp-native", "mml-lib?/pgp-native", "pgp"]
+
+pgp-commands = [
+  "email-lib?/pgp-commands",
+  "mml-lib?/pgp-commands",
+  "pgp"
+]
+
+pgp-gpg = [
+  "email-lib?/pgp-gpg",
+  "mml-lib?/pgp-gpg",
+  "pgp"
+]
+
+pgp-native = [
+  "email-lib?/pgp-native",
+  "mml-lib?/pgp-native",
+  "pgp"
+]
 
 # Terminal CLI shared code
-#
-cli = ["dep:clap", "dep:color-eyre", "dep:serde", "dep:serde_json", "dep:shellexpand-utils"]
+cli = [
+  "dep:clap",
+  "dep:color-eyre",
+  "dep:serde",
+  "dep:serde_json",
+  "dep:shellexpand-utils"
+]
 
 # Terminal prompts
-#
 email = ["dep:email_address"]
 path = ["dep:shellexpand-utils"]
 
-# TLS
-#
-rustls = ["email-lib?/rustls"]
-# native-tls = ["email-lib?/native-tls"]
+# TLS (WICHTIG: nur native-tls)
+native-tls = [
+  "email-lib?/native-tls",
+  "mml-lib?/native-tls",
+  "oauth-lib?/native-tls",
+  "secret-lib?/native-tls"
+]
 
 # Other shared stuff
-#
-config = ["dep:color-eyre", "dep:dirs", "dep:serde-toml-merge", "dep:toml", "dep:toml_edit", "dep:tracing"]
-keyring = ["email-lib?/keyring", "secret-lib?/keyring"]
-oauth2 = ["dep:oauth-lib", "email-lib?/oauth2"]
-tracing = ["dep:color-eyre", "dep:tracing", "dep:tracing-error", "dep:tracing-subscriber"]
-wizard = ["dep:async-trait", "dep:tokio", "email-lib?/autoconfig", "config", "path"]
-build-envs = ["dep:git2", "dep:serde", "dep:toml"]
+config = [
+  "dep:color-eyre",
+  "dep:dirs",
+  "dep:serde-toml-merge",
+  "dep:toml",
+  "dep:toml_edit",
+  "dep:tracing"
+]
+
+keyring = [
+  "email-lib?/keyring",
+  "secret-lib?/keyring"
+]
+
+oauth2 = [
+  "dep:oauth-lib",
+  "email-lib?/oauth2"
+]
+
+tracing = [
+  "dep:color-eyre",
+  "dep:tracing",
+  "dep:tracing-error",
+  "dep:tracing-subscriber"
+]
+
+wizard = [
+  "dep:async-trait",
+  "dep:tokio",
+  "email-lib?/autoconfig",
+  "config",
+  "path"
+]
+
+build-envs = [
+  "dep:git2",
+  "dep:serde",
+  "dep:toml"
+]
 
 [dependencies]
 async-trait = { version = "0.1", optional = true }
@@ -89,37 +182,35 @@ color-eyre = { version = "0.6", optional = true }
 comfy-table = { version = "7.1", optional = true }
 crossterm = { version = "0.27", features = ["serde"] }
 dirs = { version = "4", optional = true }
-email-lib = { version = "0.27", optional = true, default-features = false, features = ["tokio-rustls"] }
+
+email-lib = { version = "0.27", optional = true, default-features = false, features = ["tokio-native-tls"] }
+
 email_address = { version = "0.2", optional = true, default-features = false }
+
 git2 = { version = "0.19", optional = true, default-features = false }
-inquire = "0.7"
-md5 = "0.7"
-mml-lib = { version = "1", optional = true, default-features = false, features = ["tokio", "rustls", "compiler", "interpreter", "derive"] }
-oauth-lib = { version = "2", optional = true, default-features = false, features = ["tokio", "rustls"] }
+
+mml-lib = { version = "1", optional = true, default-features = false, features = ["tokio", "native-tls", "compiler", "interpreter", "derive"] }
+
+oauth-lib = { version = "2", optional = true, default-features = false, features = ["tokio", "native-tls"] }
+
 once_cell = { version = "1.20", optional = true }
 petgraph = { version = "0.6", optional = true }
+
 process-lib = { version = "1", optional = true, features = ["tokio", "derive"] }
-secret-lib = { version = "1", optional = true, default-features = false, features = ["tokio", "rustls", "command"] }
+
+secret-lib = { version = "1", optional = true, default-features = false, features = ["tokio", "native-tls", "command"] }
+
 serde = { version = "1", features = ["derive"], optional = true }
 serde-toml-merge = { version = "=0.3.9", optional = true }
 serde_json = { version = "1", optional = true }
 shellexpand-utils = { version = "=0.2.1", optional = true }
 sled = { version = "=0.34.7", optional = true }
 thiserror = "2"
+
 tokio = { version = "1.40", optional = true, default-features = false, features = ["process"] }
+
 toml = { version = "0.8", optional = true }
 toml_edit = { version = "0.24", optional = true }
 tracing = { version = "0.1", optional = true }
 tracing-error = { version = "0.2.0", optional = true }
 tracing-subscriber = { version = "0.3.18", features = ["env-filter"], optional = true }
-
-# [patch.crates-io]
-# imap-codec.git = "https://github.com/duesee/imap-codec"
-# email-lib.path = "../core/email"
-# imap-client.path = "../imap-client"
-# keyring-lib.path = "../core/keyring"
-# mml-lib.path = "../core/mml"
-# oauth-lib.path = "../core/oauth"
-# pgp-lib.path = "../core/pgp"
-# process-lib.path = "../core/process"
-# secret-lib.path = "../core/secret"
